@@ -1,5 +1,3 @@
-Sure! Here's your cleaned and formatted `README.md` file for the **Event Booking API**, ready to be included in your Laravel project root:
-
 ```markdown
 # Event Booking API
 
