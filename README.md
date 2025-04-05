@@ -123,3 +123,8 @@ http://localhost:8000/api/documentation
 ```
 
 ---
+
+## 🔐 Authentication & Authorization
+
+
+You can find the complete authentication and authorization architecture in: auth.md
