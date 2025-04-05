@@ -1,77 +1,134 @@
-# 🔐 Authentication & Authorization
+Here's the structured authentication documentation in `auth.md`:
 
-This document outlines how authentication and authorization would be structured in this API using Laravel’s built-in tools.
+```markdown
+# Authentication & Authorization Structure
+
+## Overview
+This document outlines the planned authentication and authorization structure for the Event Booking API. 
+**Note:** This is a structural design document only - actual implementation is not required.
 
 ---
 
-## ✅ Authentication
+## Authentication Structure
 
-Authentication is handled using **Laravel Sanctum**, a simple token-based system suitable for SPAs and mobile APIs.
-
-### 🔑 Login Endpoint
-
-The user can authenticate by making a `POST` request to the following endpoint:
-
-```
-POST /api/sanctum/token
+### 1. Authentication Method
+```mermaid
+graph TD
+    A[Client] -->|Login Request| B[API]
+    B -->|JWT Token| A
+    A -->|Token in Header| C[Protected Endpoints]
 ```
 
-### Request Body
+- **Bearer Token Authentication** using Laravel Sanctum
+- Token format: `Authorization: Bearer <token>`
+- Token lifespan: 1 hour (configurable)
 
+### 2. User Types
+| Role         | Authentication Required | Endpoint Access          |
+|--------------|-------------------------|--------------------------|
+| API Consumer | Yes                     | Event management routes  |
+| Attendee     | No                      | Registration endpoints   |
+
+---
+
+## Security Architecture
+
+### 1. Protected Endpoints
+| Method | Endpoint         | Required Scope       |
+|--------|------------------|----------------------|
+| POST   | /api/events      | event:create         |
+| PUT    | /api/events/{id} | event:update         |
+| DELETE | /api/events/{id} | event:delete         |
+
+### 2. Public Endpoints
+```mermaid
+graph LR
+    D[Public Access] --> E[GET /api/events]
+    D --> F[GET /api/events/{id}]
+    D --> G[POST /api/attendees]
+```
+
+---
+
+## Authorization Flow
+
+### 1. Event Ownership Policy
+```php
+// Proposed Policy Logic (not implemented)
+class EventPolicy
+{
+    public function manage(User $user, Event $event): bool
+    {
+        return $user->id === $event->user_id;
+    }
+}
+```
+
+### 2. Middleware Protection
+```mermaid
+sequenceDiagram
+    Client->>API: Request (With Token)
+    API->>Auth: Verify Token
+    Auth->>API: User Context
+    API->>Policy: Check Permissions
+    Policy->>API: Allow/Deny
+```
+
+---
+
+## Error Handling
+
+### Expected Error Responses
+**401 Unauthorized** (Missing/Invalid Token):
 ```json
 {
-  "email": "user@example.com",
-  "password": "password"
+  "error": {
+    "code": 401,
+    "message": "Unauthenticated"
+  }
 }
 ```
 
-### Successful Response
-
+**403 Forbidden** (Valid Token, No Permissions):
 ```json
 {
-  "token": "plain-text-api-token"
+  "error": {
+    "code": 403,
+    "message": "Unauthorized to modify this event"
+  }
 }
-```
-
-### Usage
-
-All protected endpoints must include the `Authorization` header:
-
-```
-Authorization: Bearer <plain-text-api-token>
 ```
 
 ---
 
-## 🔒 Authorization
+## Security Considerations
 
-Authorization is managed using **Laravel Policies**, which offer granular access control to resources like `Event`.
-
-### Example Policy Logic
-
-Each model (e.g., `Event`) has a policy class (e.g., `EventPolicy`) with methods to define access rules:
-
-```php
-public function update(User $user, Event $event)
-{
-    return $user->id === $event->user_id;
-}
-```
-
-### Enforcement in Controller
-
-```php
-$this->authorize('update', $event);
-```
-
-Laravel will automatically throw a `403 Forbidden` error if the authorization fails.
+1. **HTTPS Enforcement** - All endpoints would require HTTPS in production
+2. **Token Storage** - Client-side secure storage (localStorage with XSS protection)
+3. **Rate Limiting** - API rate limiting (100 requests/minute)
+4. **Input Validation** - Strict validation for all endpoints
+5. **Password Policy** - If implemented later:
+   - Minimum 12 characters
+   - Requires special characters
+   - Password rotation every 90 days
 
 ---
 
-## Summary
+## Future Considerations
 
-- 🔐 Auth tokens issued via Sanctum
-- 🔐 Bearer tokens used in `Authorization` header
-- 🔐 Policies restrict access to only authorized users
-- 🔐 All sensitive endpoints require authentication
+1. OAuth2.0 integration for third-party access
+2. Role-Based Access Control (RBAC) system
+3. Admin role for global event management
+4. Two-Factor Authentication (2FA)
+5. Audit logging for sensitive operations
 
+*This document represents the proposed security architecture - actual implementation details may vary.*
+```
+
+This documentation includes:
+1. Clear separation of authentication and authorization concepts
+2. Visual workflow diagrams
+3. Policy structure without implementation details
+4. Error response formats
+5. Security best practices
+6. Future enhancement possibilities
