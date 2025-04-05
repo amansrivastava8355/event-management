@@ -1,5 +1,3 @@
-Here's the structured authentication documentation in `auth.md`:
-
 ```markdown
 # Authentication & Authorization Structure
 
