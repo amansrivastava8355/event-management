@@ -39,10 +39,11 @@ graph TD
 | DELETE | /api/events/{id} | event:delete         |
 
 ### 2. Public Endpoints
+
 ```mermaid
 graph LR
     D[Public Access] --> E[GET /api/events]
-    D --> F[GET /api/events/{id}]
+    D --> F[GET /api/events/id]
     D --> G[POST /api/attendees]
 ```
 
