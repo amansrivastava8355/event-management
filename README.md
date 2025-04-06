@@ -1,4 +1,4 @@
-```markdown
+
 # Event Booking API
 
 A RESTful API for managing events and bookings using Laravel.
