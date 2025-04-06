@@ -1,4 +1,4 @@
-```markdown
+
 # Authentication & Authorization Structure
 
 ## Overview
