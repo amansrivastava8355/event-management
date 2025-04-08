@@ -31,7 +31,7 @@ use Illuminate\Http\JsonResponse;
  *     @OA\Property(property="registered_at", type="string", format="date-time")
  * )
  */
-class AttendeeController extends Controller
+class AttendeeController extends BaseApiController
 {
     /**
      * @OA\Get(
@@ -72,17 +72,5 @@ class AttendeeController extends Controller
         } catch (\Exception $e) {
             return $this->handleError($e, 'Attendee registration failed');
         }
-    }
-    
-    
-    private function handleError(\Exception $e, string $message): JsonResponse
-    {
-        return response()->json([
-            'error' => [
-                'message' => $message,
-                'details' => $e->getMessage(),
-                'code' => 500
-            ]
-        ], 500);
     }
 }

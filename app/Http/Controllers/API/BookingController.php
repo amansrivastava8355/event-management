@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\DB;
  *     )
  * )
  */
-class BookingController extends Controller
+class BookingController extends BaseApiController
 {
     /**
      * @OA\Post(
@@ -97,16 +97,5 @@ class BookingController extends Controller
             DB::rollBack();
             return $this->handleError($e, 'Booking failed');
         }
-    }
-
-    private function handleError(\Exception $e, string $message): JsonResponse
-    {
-        return response()->json([
-            'error' => [
-                'message' => $message,
-                'details' => $e->getMessage(),
-                'code' => 500
-            ]
-        ], 500);
     }
 }

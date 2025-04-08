@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
  *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
  */
-class EventController extends Controller
+class EventController extends BaseApiController
 {
     /**
      * @OA\Get(
@@ -158,16 +158,5 @@ class EventController extends Controller
         } catch (\Exception $e) {
             return $this->handleError($e, 'Event deletion failed');
         }
-    }
-
-    private function handleError(\Exception $e, string $message): JsonResponse
-    {
-        return response()->json([
-            'error' => [
-                'message' => $message,
-                'details' => $e->getMessage(),
-                'code' => 500
-            ]
-        ], 500);
     }
 }
