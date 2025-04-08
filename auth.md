@@ -1,4 +1,4 @@
-```markdown
+
 # Authentication & Authorization Structure
 
 ## Overview
@@ -39,10 +39,11 @@ graph TD
 | DELETE | /api/events/{id} | event:delete         |
 
 ### 2. Public Endpoints
+
 ```mermaid
 graph LR
     D[Public Access] --> E[GET /api/events]
-    D --> F[GET /api/events/{id}]
+    D --> F[GET /api/events/id]
     D --> G[POST /api/attendees]
 ```
 
@@ -120,13 +121,4 @@ sequenceDiagram
 4. Two-Factor Authentication (2FA)
 5. Audit logging for sensitive operations
 
-*This document represents the proposed security architecture - actual implementation details may vary.*
-```
 
-This documentation includes:
-1. Clear separation of authentication and authorization concepts
-2. Visual workflow diagrams
-3. Policy structure without implementation details
-4. Error response formats
-5. Security best practices
-6. Future enhancement possibilities

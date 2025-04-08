@@ -1,4 +1,4 @@
-```markdown
+
 # Event Booking API
 
 A RESTful API for managing events and bookings using Laravel.
@@ -125,4 +125,4 @@ http://localhost:8000/api/documentation
 ## 🔐 Authentication & Authorization
 
 
-You can find the complete authentication and authorization architecture in: auth.md
+You can find the complete authentication and authorization architecture in: [auth.md](https://github.com/amansrivastava8355/event-management/blob/main/auth.md)
